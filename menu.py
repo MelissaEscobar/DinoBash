@@ -263,9 +263,6 @@ if __name__ == "__main__":
     
     # ----------------------------- CARGA DE IMAGENES GLOBALES --------------------------------
 
-    #carga de la imagen que contiene el letrero del nivel 1
-    nivel1Img = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/Nivel1.png')
-
 
     #imagen de la manzana
     apple = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/apple.png')
@@ -293,6 +290,9 @@ if __name__ == "__main__":
     c1= CuadroStatic([900, 50], dinoBox1, "dinoFlyBox1")     
     cuadros.add(c1)
 
+    dinoBox2 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/cuadro2.png')
+    c2= CuadroStatic([1100, 50], dinoBox2, "dinoRaptorBox2")     
+    cuadros.add(c2)
 
     # ---------------- creacion de los enemigos - monstruos -----------------------------------
     ogresGroup = pygame.sprite.Group()
@@ -316,6 +316,7 @@ if __name__ == "__main__":
     d2Ima = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/dino2.png')
     d2 = cortarimg(d2Ima, 7, 3)
 
+
     # configurar música
 
     pygame.mixer.music.load('/home/melii/Documents/Python/Dinobash/music/fondo4.wav')
@@ -325,15 +326,22 @@ if __name__ == "__main__":
 
 #   -----------------------CARGA DE OBJETOS (IMAGENES, MUSICA, GRUPOS)PARA EL NIVEL 2 -----------------------------
 
-    #carga de la imagen que contiene el letrero del nivel 2
-    nivel2Img = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/Nivel2.png')
-
-
-    dinoBox2 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/cuadro2.png')
+    dinoBox3 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/cuadro2.png')
     c2= CuadroStatic([1100, 50], dinoBox2, "dinoRaptorBox2")     
+    cuadros.add(c2)
+
+    dinoBox3 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/cuadro2.png')
+    c2= CuadroStatic([1100, 50], dinoBox2, "dinoRaptorBox2")     
+    cuadros.add(c2)
     # cuadros de este tipo de dnosaurio solo aparecen en el nivel 2
     if nivel ==2:
-        cuadros.add(c2)
+        pass
+
+
+
+    
+
+    # --------------------------------------------------  WHILE -------------------------------------------------------------------
 
     while not fin:
         for event in pygame.event.get():
