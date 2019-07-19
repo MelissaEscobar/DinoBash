@@ -329,6 +329,7 @@ class TrollBoss(pygame.sprite.Sprite):
             else:  
                 self.x = 0
 
+# ---------------------------------- DINOS ----------------------------------
 class DinoFly(pygame.sprite.Sprite):
     def __init__(self, pos_ini, mat_i , name):
         pygame.sprite.Sprite.__init__(self)
@@ -344,6 +345,7 @@ class DinoFly(pygame.sprite.Sprite):
         self.vely=0
         self.name = name
         self.click = False
+        self.vida = 60
 
         #velocidad del objeto en x  y en y
         self.velx = 0
@@ -378,6 +380,7 @@ class Raptor(pygame.sprite.Sprite):
         self.velx=0
         self.name = name
         self.click = False
+        self.vida = 60
 
         #velocidad del objeto en x  y en y
         self.velx = 0
@@ -399,6 +402,42 @@ class Raptor(pygame.sprite.Sprite):
             self.x=0
 
 
+class Rex(pygame.sprite.Sprite):
+    def __init__(self, pos_ini, mat_i , name):
+        pygame.sprite.Sprite.__init__(self)
+        
+        self.x=0 # Da el movimiento segun la direccion en la que se desplaza. Asociada a las columnas
+        self.dir=0 # dirección en la que se va a mover, está asociada a las filas de la matriz
+        self.m=mat_i #matriz inicial con los sprites recortados
+        self.image = self.m[self.x][self.dir] #se settea la imagen inicial
+        self.rect=self.image.get_rect()
+        self.rect.x=pos_ini[0]
+        self.rect.y=pos_ini[1]
+        self.velx=0
+        self.name = name
+        self.click = False
+        self.vida = 160
+
+        #velocidad del objeto en x  y en y
+        self.velx = 0
+
+
+    def update(self):
+
+        self.image = self.m[self.x][self.dir]
+        self.x+=1
+
+        if self.click==False:
+            self.rect.x += self.velx
+        if self.click:
+            self.rect.center= pygame.mouse.get_pos()
+        if self.x > 4: 
+            if self.dir == 0:
+                self.dir = 2 # cambia de caminar a correr                 
+            
+            self.x=0
+
+# ----------------------- END DINOS ------------------------
 
 class Egg(pygame.sprite.Sprite):
     def __init__(self, pos_ini, matrix):
@@ -412,6 +451,7 @@ class Egg(pygame.sprite.Sprite):
         self.rect.x=pos_ini[0]
         self.rect.y=pos_ini[1]
         self.life = 160
+        self.alive = True
         
 
     def update(self):
@@ -430,19 +470,23 @@ class Egg(pygame.sprite.Sprite):
         self.image = self.m[self.x][self.dir]
             
 
-class Apple(pygame.sprite.Sprite):
-    def __init__(self, pos_ini,image ):
-        pygame.sprite.Sprite.__init__(self)
 
-        self.image = image
-        self.number = 20 # numero inicial de manzanaspara el nivel 1
+class Apple(pygame.sprite.Sprite):
+    def __init__(self, pos_ini,image  ):
+        pygame.sprite.Sprite.__init__(self)
+        
+        self.image = pygame.Surface([100, 50])
+        self.image = image # Imagen del paquete de dinosaurio
+        self.rect = self.image.get_rect()
+        self.rect.x=pos_ini[0]
+        self.rect.y=pos_ini[1]
 
 
 class CuadroStatic(pygame.sprite.Sprite):
     def __init__(self, pos_ini,image, name ):
         pygame.sprite.Sprite.__init__(self)
         
-        self.image = pygame.Surface([100, 50])
+        self.image = pygame.Surface([50, 50])
         self.image = image # Imagen del paquete de dinosaurio
         self.rect = self.image.get_rect()
         self.rect.x=pos_ini[0]
@@ -467,7 +511,8 @@ if __name__ == "__main__":
     contClock = 0 #contador de los pulsos del reloj
     fin = False
     reloj = pygame.time.Clock()
-    nivel = 0
+    nivel = 2
+    ganar = 0 # flag para saber si pasa de nivel
     flag = 0 #bandera para agregar el ogro 3
     flag2 = 0 #bandera para agregar el troll 3
     flagMenu1 =0
@@ -475,14 +520,25 @@ if __name__ == "__main__":
     
     
     # ----------------------------- CARGA DE IMAGENES GLOBALES --------------------------------
+    
+    manzanas = 20 # numero de manzanas, se incrementan y disminuyen 
+    applesGroup =  pygame.sprite.Group() # grupo de manzanas
 
 
+    # fuente de letra
+    font = pygame.font.Font(None, 60)
 
+    #se setea el texto a mostrar en una variable
+    text = str(manzanas)
+
+    #variable que contendra el mensaje y el color ->NEGRO
+    mensaje = font.render(text, 1, NEGRO)
+
+
+    table = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/table.png')
     fondo = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/menu.jpg')
     menu = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/menu.jpg')
 
-    #imagen de la manzana
-    apple = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/apple.png')
 
     #---------------------  Carga de imagenes para el huevo: ----------------------------------
     eImage = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/Egg.png')
@@ -496,7 +552,8 @@ if __name__ == "__main__":
     contTouch = 0
     contTouchOgre = 0
 
-    # configurar música
+   # configurar música
+
 
     # if nivel ==2:
     #     pygame.mixer.music.load('/home/melii/Documents/Python/Dinobash/music/fNivel2.wav')
@@ -507,8 +564,14 @@ if __name__ == "__main__":
 
 
 
+    
+
+
+
     # --------------------------- CARGA DE OBJETOS (IMAGENES, MUSICA, GRUPOS) PARA EL NIVEL 1 -------------------------------
     
+    #imagen de la manzana
+    manzanaImag = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/apple.png')
 
     #carga de la imagen que contiene el letrero del nivel 1
 
@@ -580,7 +643,7 @@ if __name__ == "__main__":
     
     #Creacion del raptor 
     rexGroup = pygame.sprite.Group()
-    rexImag = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/dino2.png')
+    rexImag = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/Dino3.png')
     dinoRex = cortarimg(rexImag, 8, 3)
 
     # ----------------------------  creacion de trolles para el nivel 2 --------------------
@@ -619,7 +682,11 @@ if __name__ == "__main__":
                     #background nivel 1
                     nivel =1
                        
+                    if (eggg.life == 0):
+                        eggg.alive= False
 
+                    if(ganar ==1):
+                        nivel = 2
                 elif (820 >p[0] > 510 and  450 >p[1]> 370): # tutorial
                     fondo = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/instruccion1.jpg')
 
@@ -645,11 +712,19 @@ if __name__ == "__main__":
                         newDino.click = True
                         dinoFlyGroup.add(newDino)
                         flagMenu1 = 1
+                        manzanas -= 4
+                        text = str(manzanas)
+                        mensaje = font.render(text, 1, NEGRO)
+
+
                     if c2.rect.collidepoint(event.pos): #c1 es el cuadro verde
                         newDino = Raptor(c2.rect, d2 , "raptor")
                         newDino.click = True
                         raptorGroup.add(newDino)
                         flagMenu1 = 1
+                        manzanas -= 4
+                        text = str(manzanas)
+                        mensaje = font.render(text, 1, NEGRO)
                 
                                      
 # --------------------- Level 2 --------------------------------------
@@ -661,16 +736,29 @@ if __name__ == "__main__":
                         newDino.click = True
                         dinoFlyGroup.add(newDino)
                         flagMenu2 = 1
+                        manzanas -= 4
+                        text = str(manzanas)
+                        mensaje = font.render(text, 1, NEGRO)
+
+
                     if c2.rect.collidepoint(event.pos): #c1 es el cuadro verde
                         newDino = Raptor(c2.rect, d2 , "raptor")
                         newDino.click = True
                         raptorGroup.add(newDino)
                         flagMenu2 = 1
+                        manzanas -= 4
+                        text = str(manzanas)
+                        mensaje = font.render(text, 1, NEGRO)
+
                     if c4.rect.collidepoint(event.pos): #c1 es el cuadro verde
                         newDino = Raptor(c4.rect, dinoRex , "tiranosaurio")
                         newDino.click = True
                         rexGroup.add(newDino)
                         flagMenu2 = 1
+                        manzanas -= 6
+                        text = str(manzanas)
+                        mensaje = font.render(text, 1, NEGRO)
+                        
                     
 
 
@@ -693,26 +781,82 @@ if __name__ == "__main__":
 
                 if flagMenu2 ==1 or flagMenu1 == 1:
                     print("se dibuja el dino")
-    
+
                     newDino.click = False
                     if newDino.name == "raptor":
                         newDino.velx = -10 # Velocidad hacia izquierda
                     if newDino.name == "fly":
                         newDino.velx = -15
                     if newDino.name == "tiranosaurio":
-                        newDino.velx = -15                    
+                        newDino.velx = -15  
+
+    # ------------------- control -------------
+
+            for d in eggs:
+                ls=pygame.sprite.spritecollide(d ,ogresGroup ,False) #ogros que colisionan con el huevo
+
+                for e in ls:
+                    print("ME ha tocao un ogro")
+                    contTouchOgre += 1
+                    print(contTouchOgre)
+
+                    #Movimiento del ogro
+                    e.velx = 0
+                    e.dir = 4
+                    eggg.life -= 1  #le quita una vida al huevo
+                print(eggg.life)
+                
+                contTouchOgre = 0
+
+                if eggg.alive == False:
+                    pygame.mixer.music.load('/home/melii/Documents/Python/Dinobash/music/gameOver.wav')
+                    pygame.mixer.music.play(0)
+                    fin = True                 
+
+            for g in dinoFlyGroup:
+                ls=pygame.sprite.spritecollide(g ,ogresGroup ,False) #dinos que colisionan con el huevo
+                for h in ls:
+                    h.dir = 2
+                    h.vida -=1
+
+                    if h.vida <0:
+                        h.dir = 3
+                        
+                    #ogresGroup.remove(h)
+
+
+            for i in raptorGroup:
+                ls=pygame.sprite.spritecollide(i ,ogresGroup ,False) #dinos que colisionan con el huevo
+                for h in ls:
+                    h.dir = 2
+                    h.vida -=1
+                
+                    if h.vida <0:
+                        h.dir = 3
+
+            for a in applesGroup:
+                if a.rect.collidepoint(event.pos): # cada vez que se da click a  una manzana
+                    manzanas += 4
+                    applesGroup.remove(a)
+                    #se setea el texto a mostrar en una variable
+                    print(manzanas)
+                text = str(manzanas)
+                print(manzanas)
+                mensaje = font.render(text, 1, NEGRO)
+                        
+
                   
 
         # -------------------------- UPDATE SECTION ---------------------------        
 
         pantalla.fill(NEGRO)
-        pantalla.blit( apple , [800, 400 ])
         pantalla.blit(fondo,[0, 0])
         cuadros.update()
         dinoFlyGroup.update()
         eggs.update()
         ogresGroup.update()
         raptorGroup.update()
+        rexGroup.update()
         
         if nivel==0:
             pantalla.blit( menu , [0, 0])
@@ -722,6 +866,10 @@ if __name__ == "__main__":
                 pantalla.blit( nivel1Img , [400, 100])
             cuadros.draw(pantalla)
             eggs.draw(pantalla)
+            pantalla.blit( table , [50, 50])
+
+            #se muestra en el screen el mensaje 
+            pantalla.blit(mensaje, (120, 90))
 
 
         elif (nivel ==2 ):
@@ -729,11 +877,14 @@ if __name__ == "__main__":
                 pantalla.blit( nivel2Img , [0, 0])
             cuadros.draw(pantalla)
             eggs.draw(pantalla)
+            pantalla.blit( table , [50, 50])
         
         
         dinoFlyGroup.draw(pantalla)
         raptorGroup.draw(pantalla)
         ogresGroup.draw(pantalla)
+        applesGroup.draw(pantalla)
+        rexGroup.draw(pantalla)
 
 
         pygame.display.flip()
@@ -741,7 +892,18 @@ if __name__ == "__main__":
         contClock += 10
         #print(contClock)
 
+        if contClock % 900 == 0: #random para las manzanas
+            for i in range (1): 
+                
+                randomy = random.randrange(400,450)
+                randomx = random.randrange(200,1050)
+                vec = [randomx, randomy]
 
+                manz =  Apple(vec, manzanaImag)
+
+                applesGroup.add(manz)
+
+                    
         if (contClock % 600 == 0 and nivel ==1 ):
 
             if len(ogresGroup)<5 :
@@ -803,7 +965,7 @@ if __name__ == "__main__":
                      ogresGroup.add(r5)
 
 
-            if(contClock>4000):
+            if(contClock>4000 and flag2==0):
                 flag2 = 1
                 randomy6 = random.randrange(400,450)
                 #randomy = rand + 200
