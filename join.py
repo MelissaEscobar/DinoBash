@@ -340,7 +340,7 @@ if __name__ == "__main__":
 
     # configurar música
 
-    pygame.mixer.music.load('/home/melii/Documents/Python/Dinobash/music/fondo4.wav')
+    pygame.mixer.music.load('/home/melii/Documents/Python/Dinobash/music/fNivel1.wav')
     pygame.mixer.music.play(-1)
 
     # pygame.mixer.music.load('/home/melii/Documents/Python/Dinobash/img/pain.wav')

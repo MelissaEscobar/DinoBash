@@ -361,7 +361,7 @@ class DinoFly(pygame.sprite.Sprite):
         if self.click:
             self.rect.center= pygame.mouse.get_pos()
         if self.x > 8: #Como se trata del dino2, entre las columnas 0 a 4
-            self.x=0
+            self.x= 0
 
 
 class Raptor(pygame.sprite.Sprite):
@@ -470,6 +470,8 @@ if __name__ == "__main__":
     nivel = 0
     flag = 0 #bandera para agregar el ogro 3
     flag2 = 0 #bandera para agregar el troll 3
+    flagMenu1 =0
+    flagMenu2=0
     
     
     # ----------------------------- CARGA DE IMAGENES GLOBALES --------------------------------
@@ -477,6 +479,7 @@ if __name__ == "__main__":
 
 
     fondo = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/menu.jpg')
+    menu = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/menu.jpg')
 
     #imagen de la manzana
     apple = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/apple.png')
@@ -493,6 +496,15 @@ if __name__ == "__main__":
     contTouch = 0
     contTouchOgre = 0
 
+    # configurar música
+
+    # if nivel ==2:
+    #     pygame.mixer.music.load('/home/melii/Documents/Python/Dinobash/music/fNivel2.wav')
+    #     pygame.mixer.music.play(-1)
+    # else:
+    #     pygame.mixer.music.load('/home/melii/Documents/Python/Dinobash/music/fNivel1.wav')
+    #     pygame.mixer.music.play(-1)
+
 
 
     # --------------------------- CARGA DE OBJETOS (IMAGENES, MUSICA, GRUPOS) PARA EL NIVEL 1 -------------------------------
@@ -502,8 +514,6 @@ if __name__ == "__main__":
 
     nivel1Img = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/Nivel1.png')
 
-    
-    
     #Dinos boxes
      
     cuadros = pygame.sprite.Group()    
@@ -513,7 +523,7 @@ if __name__ == "__main__":
     cuadros.add(c1)
 
     dinoBox2 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/cuadro2.png')
-    c2= CuadroStatic([1100, 50], dinoBox2, "dinoRaptorBox2")     
+    c2= CuadroStatic([1000, 50], dinoBox2, "dinoRaptorBox2")     
     cuadros.add(c2)
 
     # ---------------- creacion de los enemigos - monstruos -----------------------------------
@@ -543,15 +553,6 @@ if __name__ == "__main__":
     d2Ima = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/dino2.png')
     d2 = cortarimg(d2Ima, 7, 3)
 
-
-    # configurar música
-
-    if nivel ==2:
-        pygame.mixer.music.load('/home/melii/Documents/Python/Dinobash/music/fNivel2.wav')
-        pygame.mixer.music.play(-1)
-    else:
-        pygame.mixer.music.load('/home/melii/Documents/Python/Dinobash/music/fNivel1.wav')
-        pygame.mixer.music.play(-1)
     
 
 
@@ -571,7 +572,7 @@ if __name__ == "__main__":
     # cuadros de este tipo de dnosaurio solo aparecen en el nivel 2
     # Tiranosaurio dino
     dinoBox4 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/cuadro4.png')
-    c4= CuadroStatic([900, 50], dinoBox4, "TiranosaurioBox2")     
+    c4= CuadroStatic([800, 50], dinoBox4, "TiranosaurioBox2")     
     if (nivel == 2):
         cuadros.add(c4)
 
@@ -617,42 +618,7 @@ if __name__ == "__main__":
                 if 850 >p[0] > 490 and  330 >p[1]> 230: # Play -> level 1
                     #background nivel 1
                     nivel =1
-                    if nivel == 1:
-                        fondo = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/background.png')
-
-                        if c1.rect.collidepoint(event.pos):
-                            newDino = DinoFly(c1.rect, d1 , "fly") 
-                            newDino.click = True
-                            dinoFlyGroup.add(newDino)
-
-                        if c2.rect.collidepoint(event.pos): #c1 es el cuadro verde
-                            newDino = Raptor(c2.rect, d2 , "raptor")
-                            newDino.click = True
-                            raptorGroup.add(newDino)
-                        
-                     
-# --------------------- Level 2 --------------------------------------
-                    elif nivel == 2:
-                        # background nivel 2
-                        fondo = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/background2.jpg') 
-
-                        if c1.rect.collidepoint(event.pos):
-                            newDino = DinoFly(c1.rect, d1 , "fly") 
-                            newDino.click = True
-                            dinoFlyGroup.add(newDino)
-
-                        if c2.rect.collidepoint(event.pos): #c1 es el cuadro verde
-                            newDino = Raptor(c2.rect, d2 , "raptor")
-                            newDino.click = True
-                            raptorGroup.add(newDino)
-
-                        if c4.rect.collidepoint(event.pos): #c1 es el cuadro verde
-                            newDino = Raptor(c4.rect, dinoRex , "tiranosaurio")
-                            newDino.click = True
-                            rexGroup.add(newDino)
-                        
-
-
+                       
 
                 elif (820 >p[0] > 510 and  450 >p[1]> 370): # tutorial
                     fondo = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/instruccion1.jpg')
@@ -669,27 +635,75 @@ if __name__ == "__main__":
                 else:
                     pass
 
-            
+# ---------------------------- NIVEL 1 -------------------------------            
+
+                if nivel == 1:
+                    
+                    fondo = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/background.png')
+                    if c1.rect.collidepoint(event.pos):
+                        newDino = DinoFly(c1.rect, d1 , "fly") 
+                        newDino.click = True
+                        dinoFlyGroup.add(newDino)
+                        flagMenu1 = 1
+                    if c2.rect.collidepoint(event.pos): #c1 es el cuadro verde
+                        newDino = Raptor(c2.rect, d2 , "raptor")
+                        newDino.click = True
+                        raptorGroup.add(newDino)
+                        flagMenu1 = 1
+                
+                                     
+# --------------------- Level 2 --------------------------------------
+                elif nivel == 2:
+                    # background nivel 2
+                    fondo = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/background2.jpg') 
+                    if c1.rect.collidepoint(event.pos):
+                        newDino = DinoFly(c1.rect, d1 , "fly") 
+                        newDino.click = True
+                        dinoFlyGroup.add(newDino)
+                        flagMenu2 = 1
+                    if c2.rect.collidepoint(event.pos): #c1 es el cuadro verde
+                        newDino = Raptor(c2.rect, d2 , "raptor")
+                        newDino.click = True
+                        raptorGroup.add(newDino)
+                        flagMenu2 = 1
+                    if c4.rect.collidepoint(event.pos): #c1 es el cuadro verde
+                        newDino = Raptor(c4.rect, dinoRex , "tiranosaurio")
+                        newDino.click = True
+                        rexGroup.add(newDino)
+                        flagMenu2 = 1
+                    
+
+
+                    
+
+            if flagMenu2 ==1 :
+                print("se dibuja el dino")
+
+                newDino.click = False
+                if newDino.name == "raptor":
+                    newDino.velx = -10 # Velocidad hacia izquierda
+                if newDino.name == "fly":
+                    newDino.velx = -15
+                if newDino.name == "tiranosaurio":
+                    newDino.velx = -15
+
+
 
             if event.type == pygame.MOUSEBUTTONUP:
-                try:
+
+                if flagMenu2 ==1 or flagMenu1 == 1:
+                    print("se dibuja el dino")
+    
                     newDino.click = False
                     if newDino.name == "raptor":
                         newDino.velx = -10 # Velocidad hacia izquierda
-
                     if newDino.name == "fly":
                         newDino.velx = -15
-
-                    if newDino.name == "fly":
-                        newDino.velx = -15
-                
-                except:
-                    pass
-                finally:
-                    pass
+                    if newDino.name == "tiranosaurio":
+                        newDino.velx = -15                    
                   
-        #update        
 
+        # -------------------------- UPDATE SECTION ---------------------------        
 
         pantalla.fill(NEGRO)
         pantalla.blit( apple , [800, 400 ])
@@ -699,39 +713,33 @@ if __name__ == "__main__":
         eggs.update()
         ogresGroup.update()
         raptorGroup.update()
+        
+        if nivel==0:
+            pantalla.blit( menu , [0, 0])
 
-        if (nivel == 1 ):
-            if ( contClock< 500):
+        elif (nivel == 1 ):
+            if ( contClock< 700):
                 pantalla.blit( nivel1Img , [400, 100])
             cuadros.draw(pantalla)
             eggs.draw(pantalla)
-            try:
-                dinoFlyGroup.draw(pantalla)
-                raptorGroup.draw(pantalla)
-                ogresGroup.draw(pantalla)
-    
-            except :
-                print("No estoy dibujando elementos del nivel 1")
+
 
         elif (nivel ==2 ):
-            if ( contClock< 500):
-                pantalla.blit( nivel2Img , [400, 100])
+            if ( contClock< 700):
+                pantalla.blit( nivel2Img , [0, 0])
             cuadros.draw(pantalla)
             eggs.draw(pantalla)
-            try:
-                dinoFlyGroup.draw(pantalla)
-                raptorGroup.draw(pantalla)
-                ogresGroup.draw(pantalla)
-
-            except :
-                print("No estoy dibujando elementos del nivel 2")
-
+        
+        
+        dinoFlyGroup.draw(pantalla)
+        raptorGroup.draw(pantalla)
+        ogresGroup.draw(pantalla)
 
 
         pygame.display.flip()
         reloj.tick(10)
         contClock += 10
-        print(contClock)
+        #print(contClock)
 
 
         if (contClock % 600 == 0 and nivel ==1 ):
