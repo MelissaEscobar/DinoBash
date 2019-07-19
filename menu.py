@@ -305,7 +305,7 @@ if __name__ == "__main__":
     imgOgro2=pygame.image.load('/home/melii/Documents/Python/Dinobash/img/orc2.png')# Ogro 2
     mOgro2 = cortarimg(imgOgro2,7,5)
 
-
+    # ---------------------- creacion  de dinos ------------------------------
     # creacion del dino que vuela
     dinoFlyGroup = pygame.sprite.Group()
     d1Ima = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/dino1.png')
@@ -326,16 +326,34 @@ if __name__ == "__main__":
 
 #   -----------------------CARGA DE OBJETOS (IMAGENES, MUSICA, GRUPOS)PARA EL NIVEL 2 -----------------------------
 
-    dinoBox3 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/cuadro2.png')
-    c2= CuadroStatic([1100, 50], dinoBox2, "dinoRaptorBox2")     
+    # grupo de cuadros para el nivel 2
+    cuadros2 = pygame.sprite.Group()  
+    #Dino 3 
+    dinoBox3 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/troll1.png')
+    c3= CuadroStatic([1100, 50], dinoBox2, "dinoRaptorBox2")     
     cuadros.add(c2)
 
-    dinoBox3 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/cuadro2.png')
-    c2= CuadroStatic([1100, 50], dinoBox2, "dinoRaptorBox2")     
+    #Dino 4
+    dinoBox4 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/troll2.png')
+    c4= CuadroStatic([1100, 50], dinoBox2, "dinoRaptorBox2")     
     cuadros.add(c2)
     # cuadros de este tipo de dnosaurio solo aparecen en el nivel 2
-    if nivel ==2:
-        pass
+    
+
+    # ----------------------------  creacion de trolles para el nivel 2 --------------------
+
+    troll1 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/troll1.png')
+
+    imgTroll1= cortarimg(troll1,7,5) #corte de sprites
+
+    
+    troll2 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/troll2.png')
+    imgTroll2= cortarimg(troll2,7,5)  #corte de sprites
+
+
+    troll3 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/troll2.png')
+    imgTroll3= cortarimg(troll3 ,7,5)  #corte de sprites
+    
 
 
 
