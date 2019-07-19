@@ -462,13 +462,14 @@ if __name__ == "__main__":
     contClock = 0 #contador de los pulsos del reloj
     fin = False
     reloj = pygame.time.Clock()
-    nivel = 2
+    nivel = 0
     
     
     # ----------------------------- CARGA DE IMAGENES GLOBALES --------------------------------
 
 
-    fondo = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/background.png')
+
+    fondo = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/menu.jpg')
 
     #imagen de la manzana
     apple = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/apple.png')
@@ -488,6 +489,14 @@ if __name__ == "__main__":
 
 
     # --------------------------- CARGA DE OBJETOS (IMAGENES, MUSICA, GRUPOS) PARA EL NIVEL 1 -------------------------------
+    
+
+    #carga de la imagen que contiene el letrero del nivel 1
+
+    nivel1Img = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/Nivel1.png')
+
+    
+    
     #Dinos boxes
      
     cuadros = pygame.sprite.Group()    
@@ -525,27 +534,41 @@ if __name__ == "__main__":
 
     # configurar música
 
-    pygame.mixer.music.load('/home/melii/Documents/Python/Dinobash/music/fondo4.wav')
-    pygame.mixer.music.play(-1)
+    if nivel ==1:
+        pygame.mixer.music.load('/home/melii/Documents/Python/Dinobash/music/fNivel1.wav')
+        pygame.mixer.music.play(-1)
+    else:
+        pygame.mixer.music.load('/home/melii/Documents/Python/Dinobash/music/fNivel2.wav')
+        pygame.mixer.music.play(-1)
+
 
 
 
 #   -----------------------CARGA DE OBJETOS (IMAGENES, MUSICA, GRUPOS)PARA EL NIVEL 2 -----------------------------
 
-    # grupo de cuadros para el nivel 2
-    cuadros2 = pygame.sprite.Group()  
 
-    #Protoceratops Dino
-    dinoBox3 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/cuadro3.png')
-    c3= CuadroStatic([1100, 50], dinoBox3, "dinoRaptorBox2")     
-    cuadros2.add(c3)
+    #carga de la imagen que contiene el letrero del nivel 2
+    nivel2Img = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/Nivel2.png')
 
+    # #Protoceratops Dino
+    # dinoBox3 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/cuadro3.png')
+    # c3= CuadroStatic([1100, 50], dinoBox3, "dinoRaptorBox2")
+    # if (nivel == 2):
+    #     cuadros.add(c3)
+
+    # cuadros de este tipo de dnosaurio solo aparecen en el nivel 2
     # Tiranosaurio dino
     dinoBox4 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/cuadro4.png')
     c4= CuadroStatic([1100, 50], dinoBox4, "TiranosaurioBox2")     
-    cuadros2.add(c4)
-    # cuadros de este tipo de dnosaurio solo aparecen en el nivel 2
+    if (nivel == 2):
+        cuadros.add(c4)
+
+    # -----------------------------------  creacion de dinos ---------------------------------------------------
     
+    #Creacion del raptor 
+    rexGroup = pygame.sprite.Group()
+    rexImag = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/dino2.png')
+    dinoRex = cortarimg(rexImag, 7, 3)
 
     # ----------------------------  creacion de trolles para el nivel 2 --------------------
 
@@ -581,6 +604,7 @@ if __name__ == "__main__":
         # -----------   FLAG    --------            
                 if 850 >p[0] > 490 and  330 >p[1]> 230: # Play -> level 1
                     #background nivel 1
+                    nivel =1
                     if nivel == 1:
                         fondo = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/background.png')
 
@@ -595,74 +619,36 @@ if __name__ == "__main__":
                             newDino.click = True
                             raptorGroup.add(newDino)
                         
-                        #update        
-
-                        pantalla.fill(NEGRO)
-                        cuadros.update()
-                        dinoFlyGroup.update()
-                        eggs.update()
-                        ogresGroup.update()
-                        raptorGroup.update()
-                
-                
-                        pantalla.blit( apple , [800, 400 ])
-                        pantalla.blit(fondo,[0, 0])
-                        if (nivel == 1 and contClock< 500):
-                            pantalla.blit( nivel1Img , [400, 100])
-                
-                        elif (nivel ==2 and contClock< 500):
-                            pantalla.blit( nivel2Img , [400, 100])
-                
-                        cuadros.draw(pantalla)
-                        eggs.draw(pantalla)
-                        dinoFlyGroup.draw(pantalla)
-                        raptorGroup.draw(pantalla)
-                        ogresGroup.draw(pantalla)
-                        pygame.display.flip()
-                        reloj.tick(10)
-                        contClock += 10
-                        #print (contClock)
-
+                     
+# --------------------- Level 2 --------------------------------------
                     elif nivel == 2:
                         # background nivel 2
                         fondo = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/background2.jpg') 
+
+                        if c1.rect.collidepoint(event.pos):
+                            newDino = DinoFly(c1.rect, d1 , "fly") 
+                            newDino.click = True
+                            dinoFlyGroup.add(newDino)
+
+                        if c2.rect.collidepoint(event.pos): #c1 es el cuadro verde
+                            newDino = Raptor(c2.rect, d2 , "raptor")
+                            newDino.click = True
+                            raptorGroup.add(newDino)
+
+                        if c4.rect.collidepoint(event.pos): #c1 es el cuadro verde
+                            newDino = Raptor(c4.rect, dinoRex , "tiranosaurio")
+                            newDino.click = True
+                            rexGroup.add(newDino)
                         
 
 
-                        #update        
 
-                        pantalla.fill(NEGRO)
-                        cuadros.update()
-                        dinoFlyGroup.update()
-                        eggs.update()
-                        ogresGroup.update()
-                        raptorGroup.update()
-                
-                
-                        pantalla.blit( apple , [800, 400 ])
-                        pantalla.blit(fondo,[0, 0])
-                        if (nivel == 1 and contClock< 500):
-                            pantalla.blit( nivel1Img , [400, 100])
-                
-                        elif (nivel ==2 and contClock< 500):
-                            pantalla.blit( nivel2Img , [400, 100])
-                
-                        cuadros.draw(pantalla)
-                        eggs.draw(pantalla)
-                        dinoFlyGroup.draw(pantalla)
-                        raptorGroup.draw(pantalla)
-                        ogresGroup.draw(pantalla)
-                        pygame.display.flip()
-                        reloj.tick(10)
-                        contClock += 10
-                        #print (contClock)
-
-                elif 820 >p[0] > 510 and  450 >p[1]> 370: # tutorial
+                elif (820 >p[0] > 510 and  450 >p[1]> 370): # tutorial
                     fondo = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/instruccion1.jpg')
 
 
 
-                elif 820 >p[0] > 510 and  560 >p[1]> 490: # creditos
+                elif (820 >p[0] > 510 and  560 >p[1]> 490): # creditos
                     fondo = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/creditos.jpg')
                     
 
@@ -672,17 +658,61 @@ if __name__ == "__main__":
                 else:
                     pass
 
+            
 
+            if event.type == pygame.MOUSEBUTTONUP:
+                try:
+                    newDino.click = False
+                    if newDino.name == "raptor":
+                        newDino.velx = -10 # Velocidad hacia izquierda
+
+                    if newDino.name == "fly":
+                        newDino.velx = -15
+
+                    if newDino.name == "fly":
+                        newDino.velx = -15
                 
+                except:
+                    pass
+                finally:
+                    pass
+                  
         #update        
+
+
+        pantalla.fill(NEGRO)
+        pantalla.blit( apple , [800, 400 ])
+        pantalla.blit(fondo,[0, 0])
+
+        try:
+            cuadros.update()
+            dinoFlyGroup.update()
+            eggs.update()
+            ogresGroup.update()
+            raptorGroup.update()
+
+
+            if (nivel == 1 and contClock< 500):
+                pantalla.blit( nivel1Img , [400, 100])
+
+            elif (nivel ==2 and contClock< 500):
+                pantalla.blit( nivel2Img , [400, 100])
+
+            cuadros.draw(pantalla)
+            eggs.draw(pantalla)
+            dinoFlyGroup.draw(pantalla)
+            raptorGroup.draw(pantalla)
+            ogresGroup.draw(pantalla)
+
+        except :
+            pass
+        finally:
+            pass
 
 
         pygame.display.flip()
         reloj.tick(10)
         contClock += 10
-
-       # pantalla.fill(NEGRO)
-        pantalla.blit(fondo,[0, 0])
 
             
 
