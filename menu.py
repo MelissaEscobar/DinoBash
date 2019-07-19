@@ -31,6 +31,8 @@ def cortarimg(img,fx,fy):
     return m
 
 
+# ########################################## ogre 1 ####################################################
+
 class Ogre1(pygame.sprite.Sprite):
     def __init__(self, pos_ini, mat_i , name):
         pygame.sprite.Sprite.__init__(self)
@@ -93,8 +95,8 @@ class Ogre1(pygame.sprite.Sprite):
                 self.x=0
 
 
-# Ogre 2
-
+# ####################################### Ogre 2 ##########################################################
+ 
 class Ogre2(pygame.sprite.Sprite):
     def __init__(self, pos_ini, mat_i , name):
         pygame.sprite.Sprite.__init__(self)
@@ -147,9 +149,180 @@ class Ogre2(pygame.sprite.Sprite):
             elif self.dir ==2: #Animacion en la que el monstruo recibe un golpe 
                 self.dir= 1
                 self.x = 0
-            else:                    
+            else:  
                 self.x = 0
 
+
+
+class Ogre3(pygame.sprite.Sprite): # capitan de los malos de los ogros. Es el mas dificil de matar
+    def __init__(self, pos_ini, mat_i , name):
+        pygame.sprite.Sprite.__init__(self)
+        
+        self.x=0 # Da el movimiento segun la direccion en la que se desplaza. Asociada a las columnas
+        self.dir=1 # dirección en la que se va a mover, está asociada a las filas de la matriz
+        self.m=mat_i #matriz inicial con los sprites recortados
+        self.image = self.m[self.x][self.dir] #se settea la imagen inicial
+        self.rect=self.image.get_rect()
+        self.rect.x=pos_ini[0]
+        self.rect.y=pos_ini[1]
+        self.velx=0
+        self.vely=0
+        self.name = name
+        self.click = False
+
+        #velocidad del objeto en x  y en y
+        self.velx = 0
+        self.vely = 0
+        self.vida= 500
+
+
+    def update(self):
+
+        self.clock +=1 
+        
+        self.image = self.m[self.x][self.dir]
+        self.x+=1
+        auxVelx= self.velx
+        auxVely= self.vely
+              
+    
+        if(self.clock % 23 == 0):
+            self.vely = auxVely
+            self.velx = auxVelx
+
+        if(self.clock % 47 == 0):
+            self.vely = -auxVely
+            self.velx = auxVelx
+    
+        self.rect.x += self.velx
+        self.rect.y += self.vely
+
+
+        if self.x > 6: 
+            if self.dir == 3: #Animacion en la que el monstruo muere
+                self.x= 6
+                self.velx =0
+                self.vely = 0
+            elif self.dir ==2: #Animacion en la que el monstruo recibe un golpe 
+                self.dir= 1
+                self.x = 0
+            else:  
+                self.x = 0
+
+
+# ############################# Trolls ####################################################
+
+class Trolls(pygame.sprite.Sprite): #esta clase servirápara instanciar a los trolls 1 y 2, ya que implementan  los mismos métodos y atributos
+    def __init__(self, pos_ini, mat_i , name):
+        pygame.sprite.Sprite.__init__(self)
+        
+        self.x=0 # Da el movimiento segun la direccion en la que se desplaza. Asociada a las columnas
+        self.dir=1 # dirección en la que se va a mover, está asociada a las filas de la matriz
+        self.m=mat_i #matriz inicial con los sprites recortados
+        self.image = self.m[self.x][self.dir] #se settea la imagen inicial
+        self.rect=self.image.get_rect()
+        self.rect.x=pos_ini[0]
+        self.rect.y=pos_ini[1]
+        self.velx=0
+        self.vely=0
+        self.name = name
+        self.click = False
+
+        #velocidad del objeto en x  y en y
+        self.velx = 0
+        self.vely = 0
+        self.vida= 500
+
+
+    def update(self):
+
+        self.clock +=1 
+        
+        self.image = self.m[self.x][self.dir]
+        self.x+=1
+        auxVelx= self.velx
+        auxVely= self.vely
+              
+    
+        if(self.clock % 23 == 0):
+            self.vely = auxVely
+            self.velx = auxVelx
+
+        if(self.clock % 47 == 0):
+            self.vely = -auxVely
+            self.velx = auxVelx
+    
+        self.rect.x += self.velx
+        self.rect.y += self.vely
+
+
+        if self.x > 6: 
+            if self.dir == 3: #Animacion en la que el monstruo muere
+                self.x= 6
+                self.velx =0
+                self.vely = 0
+            elif self.dir ==2: #Animacion en la que el monstruo recibe un golpe 
+                self.dir= 1
+                self.x = 0
+            else:  
+                self.x = 0
+
+# ########################### Troll 3, el mas dificil de matar #######################################
+
+class TrollBoss(pygame.sprite.Sprite):
+    def __init__(self, pos_ini, mat_i , name):
+        pygame.sprite.Sprite.__init__(self)
+        
+        self.x=0 # Da el movimiento segun la direccion en la que se desplaza. Asociada a las columnas
+        self.dir=1 # dirección en la que se va a mover, está asociada a las filas de la matriz
+        self.m=mat_i #matriz inicial con los sprites recortados
+        self.image = self.m[self.x][self.dir] #se settea la imagen inicial
+        self.rect=self.image.get_rect()
+        self.rect.x=pos_ini[0]
+        self.rect.y=pos_ini[1]
+        self.velx=0
+        self.vely=0
+        self.name = name
+        self.click = False
+
+        #velocidad del objeto en x  y en y
+        self.velx = 0
+        self.vely = 0
+        self.vida= 500
+
+
+    def update(self):
+
+        self.clock +=1 
+        
+        self.image = self.m[self.x][self.dir]
+        self.x+=1
+        auxVelx= self.velx
+        auxVely= self.vely
+              
+    
+        if(self.clock % 23 == 0):
+            self.vely = auxVely
+            self.velx = auxVelx
+
+        if(self.clock % 47 == 0):
+            self.vely = -auxVely
+            self.velx = auxVelx
+    
+        self.rect.x += self.velx
+        self.rect.y += self.vely
+
+
+        if self.x > 6: 
+            if self.dir == 3: #Animacion en la que el monstruo muere
+                self.x= 6
+                self.velx =0
+                self.vely = 0
+            elif self.dir ==2: #Animacion en la que el monstruo recibe un golpe 
+                self.dir= 1
+                self.x = 0
+            else:  
+                self.x = 0
 
 class DinoFly(pygame.sprite.Sprite):
     def __init__(self, pos_ini, mat_i , name):
