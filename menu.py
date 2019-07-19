@@ -118,6 +118,9 @@ class Ogre2(pygame.sprite.Sprite):
         self.vely = 0
         self.vida= 500
 
+        #clock
+        self.clock  = 0
+
 
     def update(self):
 
@@ -175,6 +178,8 @@ class Ogre3(pygame.sprite.Sprite): # capitan de los malos de los ogros. Es el ma
         self.vely = 0
         self.vida= 500
 
+        # clock
+        self.clock =0
 
     def update(self):
 
@@ -463,6 +468,8 @@ if __name__ == "__main__":
     fin = False
     reloj = pygame.time.Clock()
     nivel = 0
+    flag = 0 #bandera para agregar el ogro 3
+    flag2 = 0 #bandera para agregar el troll 3
     
     
     # ----------------------------- CARGA DE IMAGENES GLOBALES --------------------------------
@@ -520,6 +527,11 @@ if __name__ == "__main__":
     imgOgro2=pygame.image.load('/home/melii/Documents/Python/Dinobash/img/orc2.png')# Ogro 2
     mOgro2 = cortarimg(imgOgro2,7,5)
 
+
+     #IMagen con los sprites a recortar ogro 2
+    imgOgro3=pygame.image.load('/home/melii/Documents/Python/Dinobash/img/orc3.png')# Ogro 2
+    mOgro3 = cortarimg(imgOgro3,7,5)
+
     # ---------------------- creacion  de dinos ------------------------------
     # creacion del dino que vuela
     dinoFlyGroup = pygame.sprite.Group()
@@ -534,13 +546,13 @@ if __name__ == "__main__":
 
     # configurar música
 
-    if nivel ==1:
-        pygame.mixer.music.load('/home/melii/Documents/Python/Dinobash/music/fNivel1.wav')
-        pygame.mixer.music.play(-1)
-    else:
+    if nivel ==2:
         pygame.mixer.music.load('/home/melii/Documents/Python/Dinobash/music/fNivel2.wav')
         pygame.mixer.music.play(-1)
-
+    else:
+        pygame.mixer.music.load('/home/melii/Documents/Python/Dinobash/music/fNivel1.wav')
+        pygame.mixer.music.play(-1)
+    
 
 
 
@@ -559,7 +571,7 @@ if __name__ == "__main__":
     # cuadros de este tipo de dnosaurio solo aparecen en el nivel 2
     # Tiranosaurio dino
     dinoBox4 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/cuadro4.png')
-    c4= CuadroStatic([1100, 50], dinoBox4, "TiranosaurioBox2")     
+    c4= CuadroStatic([900, 50], dinoBox4, "TiranosaurioBox2")     
     if (nivel == 2):
         cuadros.add(c4)
 
@@ -568,7 +580,7 @@ if __name__ == "__main__":
     #Creacion del raptor 
     rexGroup = pygame.sprite.Group()
     rexImag = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/dino2.png')
-    dinoRex = cortarimg(rexImag, 7, 3)
+    dinoRex = cortarimg(rexImag, 8, 3)
 
     # ----------------------------  creacion de trolles para el nivel 2 --------------------
 
@@ -607,7 +619,6 @@ if __name__ == "__main__":
                     nivel =1
                     if nivel == 1:
                         fondo = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/background.png')
-
 
                         if c1.rect.collidepoint(event.pos):
                             newDino = DinoFly(c1.rect, d1 , "fly") 
@@ -683,36 +694,114 @@ if __name__ == "__main__":
         pantalla.fill(NEGRO)
         pantalla.blit( apple , [800, 400 ])
         pantalla.blit(fondo,[0, 0])
+        cuadros.update()
+        dinoFlyGroup.update()
+        eggs.update()
+        ogresGroup.update()
+        raptorGroup.update()
 
-        try:
-            cuadros.update()
-            dinoFlyGroup.update()
-            eggs.update()
-            ogresGroup.update()
-            raptorGroup.update()
-
-
-            if (nivel == 1 and contClock< 500):
+        if (nivel == 1 ):
+            if ( contClock< 500):
                 pantalla.blit( nivel1Img , [400, 100])
-
-            elif (nivel ==2 and contClock< 500):
-                pantalla.blit( nivel2Img , [400, 100])
-
             cuadros.draw(pantalla)
             eggs.draw(pantalla)
-            dinoFlyGroup.draw(pantalla)
-            raptorGroup.draw(pantalla)
-            ogresGroup.draw(pantalla)
+            try:
+                dinoFlyGroup.draw(pantalla)
+                raptorGroup.draw(pantalla)
+                ogresGroup.draw(pantalla)
+    
+            except :
+                print("No estoy dibujando elementos del nivel 1")
 
-        except :
-            pass
-        finally:
-            pass
+        elif (nivel ==2 ):
+            if ( contClock< 500):
+                pantalla.blit( nivel2Img , [400, 100])
+            cuadros.draw(pantalla)
+            eggs.draw(pantalla)
+            try:
+                dinoFlyGroup.draw(pantalla)
+                raptorGroup.draw(pantalla)
+                ogresGroup.draw(pantalla)
+
+            except :
+                print("No estoy dibujando elementos del nivel 2")
+
 
 
         pygame.display.flip()
         reloj.tick(10)
         contClock += 10
+        print(contClock)
+
+
+        if (contClock % 600 == 0 and nivel ==1 ):
+
+            if len(ogresGroup)<5 :
+                for i in range (1): 
+                    randomy = random.randrange(400,450)
+                    #randomy = rand + 200
+                    r = Ogre1([-40, randomy], m, "r") 
+                    r.velx= random.randrange(1,3)
+                    r.vely= random.randrange(1,3)
+                    ogresGroup.add(r)    
+
+                    randomy2 = random.randrange(400,450)
+                    #randomy = rand + 200
+                    r2 = Ogre2([-40, randomy2], mOgro2, "r2") 
+                    r2.velx= random.randrange(1,3)
+                    r2.vely= random.randrange(1,3)
+                    ogresGroup.add(r2)
+
+            if(contClock>4000 and flag==0):
+                flag= 1
+                randomy3 = random.randrange(400,450)
+                #randomy = rand + 200
+                r3 = Ogre3([-40, randomy3], mOgro3, "r3") 
+                r3.velx= random.randrange(1,7)
+                r3.vely= random.randrange(1,3)
+                ogresGroup.add(r3)
+
+        if (contClock % 600 == 0 and nivel ==2 ):
+            if len(ogresGroup)<7:
+                for i in range (1): 
+                     randomy = random.randrange(400,450)
+                     #randomy = rand + 200
+                     r = Ogre1([-40, randomy], m, "r") 
+                     r.velx= random.randrange(1,6)
+                     ogresGroup.add(r) 
+
+                     randomy2 = random.randrange(400,450)
+                     #randomy = rand + 200
+                     r2 = Ogre2([-40, randomy2], mOgro2, "r2") 
+                     r2.velx= random.randrange(1,7)
+                     ogresGroup.add(r2)
+
+                     randomy3 = random.randrange(400,450)
+                     #randomy = rand + 200
+                     r3 = Ogre3([-40, randomy3], mOgro3, "r3") 
+                     r3.velx= random.randrange(1,7)
+                     ogresGroup.add(r3)
+
+                     randomy4 = random.randrange(400,450)
+                     #randomy = rand + 200
+                     r4 = Ogre3([-40, randomy4], imgTroll1, "r4") 
+                     r4.velx= random.randrange(1,7)
+                     ogresGroup.add(r4)
+
+                     randomy5 = random.randrange(400,450)
+                     #randomy = rand + 200
+                     r5 = Ogre3([-40, randomy5], imgTroll2, "r5") 
+                     r5.velx= random.randrange(1,7)
+                     ogresGroup.add(r5)
+
+
+            if(contClock>4000):
+                flag2 = 1
+                randomy6 = random.randrange(400,450)
+                #randomy = rand + 200
+                r6 = Ogre3([-40, randomy6], imgTroll3, "r6") 
+                r6.velx= random.randrange(5,8)
+                ogresGroup.add(r6)
 
             
 
