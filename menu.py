@@ -222,11 +222,12 @@ class Egg(pygame.sprite.Sprite):
         self.image = self.m[self.x][self.dir]
             
 
-# class Apple(pygame.sprite.Sprite):
-#     def __init__(self, pos_ini,image ):
-#         pygame.sprite.Sprite.__init__(self)
+class Apple(pygame.sprite.Sprite):
+    def __init__(self, pos_ini,image ):
+        pygame.sprite.Sprite.__init__(self)
 
-#         self.image = image 
+        self.image = image
+        self.number = 20 # numero inicial de manzanaspara el nivel 1
 
 
 class CuadroStatic(pygame.sprite.Sprite):
@@ -263,6 +264,8 @@ if __name__ == "__main__":
     
     # ----------------------------- CARGA DE IMAGENES GLOBALES --------------------------------
 
+
+    fondo = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/background.png')
 
     #imagen de la manzana
     apple = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/apple.png')
@@ -328,15 +331,16 @@ if __name__ == "__main__":
 
     # grupo de cuadros para el nivel 2
     cuadros2 = pygame.sprite.Group()  
-    #Dino 3 
-    dinoBox3 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/troll1.png')
-    c3= CuadroStatic([1100, 50], dinoBox2, "dinoRaptorBox2")     
-    cuadros.add(c2)
 
-    #Dino 4
-    dinoBox4 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/troll2.png')
-    c4= CuadroStatic([1100, 50], dinoBox2, "dinoRaptorBox2")     
-    cuadros.add(c2)
+    #Protoceratops Dino
+    dinoBox3 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/cuadro1.png')
+    c3= CuadroStatic([1100, 50], dinoBox3, "dinoRaptorBox2")     
+    cuadros2.add(c3)
+
+    # Tiranosaurio dino
+    dinoBox4 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/cuadro2.png')
+    c4= CuadroStatic([1100, 50], dinoBox4, "TiranosaurioBox2")     
+    cuadros2.add(c4)
     # cuadros de este tipo de dnosaurio solo aparecen en el nivel 2
     
 
@@ -376,6 +380,17 @@ if __name__ == "__main__":
                     #background nivel 1
                     if nivel == 1:
                         fondo = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/background.png')
+
+
+                        if c1.rect.collidepoint(event.pos):
+                            newDino = DinoFly(c1.rect, d1 , "fly") 
+                            newDino.click = True
+                            dinoFlyGroup.add(newDino)
+
+                        if c2.rect.collidepoint(event.pos): #c1 es el cuadro verde
+                            newDino = Raptor(c2.rect, d2 , "raptor")
+                            newDino.click = True
+                            raptorGroup.add(newDino)
                         
                         #update        
 
