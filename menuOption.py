@@ -37,3 +37,75 @@ j1.doblet = False
                     for p in Puntos:
                         Puntos.remove(p)
                     men = 1.5
+
+ if (self.velx>0 and self.rect.y>350  ):
+        
+            if(self.clock % 500 == 0):
+                self.vely = auxVely
+                self.velx = 0
+
+            if(self.clock % 257 == 0):
+                self.vely = 0
+                self.velx = auxVelx
+        
+            self.rect.x += self.velx
+            self.rect.y -= self.vely
+
+        elif (self.velx>0 and self.rect.y > 650):
+            
+            self.rect.x += self.velx
+            self.rect.y -= self.vely
+
+        else:
+            self.rect.x += self.velx
+            self.rect.y += self.vely
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if (self.velx>0 and self.rect.y>350  ):
+    
+            if(self.clock % 500 == 0):
+                self.vely = auxVely
+                self.velx = 0
+
+                if (self.velx>0 and self.rect.y>350  ):
+                    self.rect.x += self.velx
+                    self.rect.y -= self.vely
+
+                elif (self.velx>0 and self.rect.y > 600):
+                    self.rect.x += self.velx
+                    self.rect.y -= self.vely
+            
+                else:
+                    self.rect.x += self.velx
+                    self.rect.y += self.vely
+            
+            if(self.clock % 257 == 0):
+                self.vely = 0
+                self.velx = auxVelx
+        
+                if (self.velx>0 and self.rect.y>350  ):
+                    self.rect.x += self.velx
+                    self.rect.y -= self.vely
+
+                elif (self.velx>0 and self.rect.y > 600):
+                    self.rect.x += self.velx
+                    self.rect.y -= self.vely      
+
+                else:                    
+                    self.rect.x += self.velx
+                    self.rect.y += self.vely
+                
+            else:
+                self.rect.x += auxVelx            

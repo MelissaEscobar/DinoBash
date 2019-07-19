@@ -51,19 +51,37 @@ class Ogre1(pygame.sprite.Sprite):
         #velocidad del objeto en x  y en y
         self.velx = 0
         self.vely = 0
+        self.clock = 0
 
 
     def update(self):
+        self.clock += 1
+        auxVelx= self.velx
+        auxVely= self.vely
 
         self.image = self.m[self.x][self.dir]
         self.x+=1
 
-        if self.click==False:
-            self.rect.x += self.velx
-            self.rect.y += self.vely
-        if self.click:
-            self.rect.center= pygame.mouse.get_pos()
-        if self.x > 6: #Como se trata del dino2, entre las columnas 0 a 4
+        if(self.clock % 19 == 0):
+            self.vely = -auxVely
+            self.velx = auxVelx
+            
+        elif(self.clock % 41 == 0):
+            self.vely = auxVely
+            self.velx = auxVelx
+
+
+        elif(self.clock % 50 == 0):
+            self.vely = 0
+            self.velx = auxVelx        
+
+
+
+        self.rect.x += self.velx
+        self.rect.y += self.vely
+
+
+        if self.x > 6: 
             if self.dir == 3: #Animacion en la que el monstruo muere
                 self.x= 6
                 self.velx =0
@@ -101,15 +119,27 @@ class Ogre2(pygame.sprite.Sprite):
 
     def update(self):
 
+        self.clock +=1 
+        
         self.image = self.m[self.x][self.dir]
         self.x+=1
+        auxVelx= self.velx
+        auxVely= self.vely
+              
+    
+        if(self.clock % 23 == 0):
+            self.vely = auxVely
+            self.velx = auxVelx
 
-        if self.click==False:
-            self.rect.x += self.velx
-            self.rect.y += self.vely
-        if self.click:
-            self.rect.center= pygame.mouse.get_pos()
-        if self.x > 6: #Como se trata del dino2, entre las columnas 0 a 4
+        if(self.clock % 47 == 0):
+            self.vely = -auxVely
+            self.velx = auxVelx
+    
+        self.rect.x += self.velx
+        self.rect.y += self.vely
+
+
+        if self.x > 6: 
             if self.dir == 3: #Animacion en la que el monstruo muere
                 self.x= 6
                 self.velx =0
@@ -118,7 +148,7 @@ class Ogre2(pygame.sprite.Sprite):
                 self.dir= 1
                 self.x = 0
             else:                    
-                self.x=0
+                self.x = 0
 
 
 class DinoFly(pygame.sprite.Sprite):

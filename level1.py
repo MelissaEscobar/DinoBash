@@ -39,6 +39,7 @@ def cortarimg(img,fx,fy):
 
     return m
 
+# ------------------------------------------ Ogre 1 ----------------------------------------------------------
 
 class Ogre1(pygame.sprite.Sprite):
     def __init__(self, pos_ini, mat_i , name):
@@ -61,17 +62,37 @@ class Ogre1(pygame.sprite.Sprite):
         self.velx = 0
         self.vely = 0
 
+        #clock
+        self.clock = 0
+
 
     def update(self):
+        self.clock += 1
+        auxVelx= self.velx
+        auxVely= self.vely
 
         self.image = self.m[self.x][self.dir]
         self.x+=1
 
-        if self.click==False:
-            self.rect.x += self.velx
-            self.rect.y += self.vely
-        if self.click:
-            self.rect.center= pygame.mouse.get_pos()
+        if(self.clock % 19 == 0):
+            self.vely = -auxVely
+            self.velx = auxVelx
+
+        elif(self.clock % 41 == 0):
+            self.vely = auxVely
+            self.velx = auxVelx
+
+
+        elif(self.clock % 50 == 0):
+            self.vely = 0
+            self.velx = auxVelx        
+
+
+
+        self.rect.x += self.velx
+        self.rect.y += self.vely
+
+
         if self.x > 6: #Como se trata del dino2, entre las columnas 0 a 4
             if self.dir == 3: #Animacion en la que el monstruo muere
                 self.x= 6
@@ -84,7 +105,7 @@ class Ogre1(pygame.sprite.Sprite):
                 self.x=0
 
 
-# Ogre 2
+# ------------------------------- Ogre 2 ------------------------------------------------------
 
 class Ogre2(pygame.sprite.Sprite):
     def __init__(self, pos_ini, mat_i , name):
@@ -122,39 +143,18 @@ class Ogre2(pygame.sprite.Sprite):
         self.x+=1
         auxVelx= self.velx
         auxVely= self.vely
-        
-
-        # if self.click==False:
-        #     self.rect.x += self.velx
-        #     self.rect.y += self.vely
-        # if self.click:
-        #     self.rect.center= pygame.mouse.get_pos()
-        if (self.velx>0 and self.rect.y>400 ):
+              
     
-            if(self.clock % 500 == 0):
-                self.vely = auxVely
-                self.vely = 0
+        if(self.clock % 23 == 0):
+            self.vely = auxVely
+            self.velx = auxVelx
 
-            if(self.clock % 257 == 0):
-                self.vely = auxVely
-                self.velx = 0
-        
-            self.rect.x += self.velx
-            self.rect.y -= self.vely
-
-        elif (self.velx>0 and self.rect.y<400):
-
-            if(self.clock % 500 == 0):
-                self.vely = auxVely
-                self.vely = 0
-
-            if(self.clock % 257 == 0):
-                self.vely = auxVely
-                self.velx = 0
-        
-            self.rect.x += self.velx
-            self.rect.y += self.vely
-
+        if(self.clock % 47 == 0):
+            self.vely = -auxVely
+            self.velx = auxVelx
+    
+        self.rect.x += self.velx
+        self.rect.y += self.vely
 
 
         if self.x > 6: 
@@ -526,19 +526,19 @@ if __name__ == "__main__":
                  r.velx= random.randrange(1,6)
                  ogresGroup.add(r)    
 
-        if (contClock % 500 == 0 and nivel ==2 and len(ogresGroup)<7):
+        if (contClock % 500 == 0 and nivel ==2 and len(ogresGroup)<2):
             for i in range (1): 
-                 randomy = random.randrange(400,450)
+                 randomy = random.randrange(350,450)
                  #randomy = rand + 200
                  r = Ogre1([-40, randomy], m, "r") 
                  r.velx= random.randrange(1,6)
-                 #r.vely = random.randrange(1,5)
+                 r.vely = random.randrange(1,5)
                  ogresGroup.add(r) 
 
-                 randomy2 = random.randrange(400,450)
+                 randomy2 = random.randrange(350,420)
                  #randomy = rand + 200
                  r2 = Ogre2([-40, randomy2], mOgro2, "r2") 
-                 r2.velx= random.randrange(1,7)
+                 r2.velx= random.randrange(1,4)
                  r2.vely = random.randrange(1,5)
                  ogresGroup.add(r2)
             
