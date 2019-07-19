@@ -107,18 +107,57 @@ class Ogre2(pygame.sprite.Sprite):
         self.vely = 0
         self.vida= 500
 
+        #reloj propio
+        self.clock = 0
+
+        
+
+
 
     def update(self):
 
+        self.clock +=1 
+        
         self.image = self.m[self.x][self.dir]
         self.x+=1
+        auxVelx= self.velx
+        auxVely= self.vely
+        
 
-        if self.click==False:
+        # if self.click==False:
+        #     self.rect.x += self.velx
+        #     self.rect.y += self.vely
+        # if self.click:
+        #     self.rect.center= pygame.mouse.get_pos()
+        if (self.velx>0 and self.rect.y>400 ):
+    
+            if(self.clock % 500 == 0):
+                self.vely = auxVely
+                self.vely = 0
+
+            if(self.clock % 257 == 0):
+                self.vely = auxVely
+                self.velx = 0
+        
+            self.rect.x += self.velx
+            self.rect.y -= self.vely
+
+        elif (self.velx>0 and self.rect.y<400):
+
+            if(self.clock % 500 == 0):
+                self.vely = auxVely
+                self.vely = 0
+
+            if(self.clock % 257 == 0):
+                self.vely = auxVely
+                self.velx = 0
+        
             self.rect.x += self.velx
             self.rect.y += self.vely
-        if self.click:
-            self.rect.center= pygame.mouse.get_pos()
-        if self.x > 6: #Como se trata del dino2, entre las columnas 0 a 4
+
+
+
+        if self.x > 6: 
             if self.dir == 3: #Animacion en la que el monstruo muere
                 self.x= 6
                 self.velx =0
@@ -340,8 +379,8 @@ if __name__ == "__main__":
 
     # configurar música
 
-    pygame.mixer.music.load('/home/melii/Documents/Python/Dinobash/music/fondo4.wav')
-    pygame.mixer.music.play(-1)
+    #pygame.mixer.music.load('/home/melii/Documents/Python/Dinobash/music/fondo4.wav')
+    #pygame.mixer.music.play(-1)
 
     # pygame.mixer.music.load('/home/melii/Documents/Python/Dinobash/img/pain.wav')
     # pygame.mixer.music.play(0)
@@ -493,12 +532,14 @@ if __name__ == "__main__":
                  #randomy = rand + 200
                  r = Ogre1([-40, randomy], m, "r") 
                  r.velx= random.randrange(1,6)
+                 #r.vely = random.randrange(1,5)
                  ogresGroup.add(r) 
 
                  randomy2 = random.randrange(400,450)
                  #randomy = rand + 200
                  r2 = Ogre2([-40, randomy2], mOgro2, "r2") 
                  r2.velx= random.randrange(1,7)
+                 r2.vely = random.randrange(1,5)
                  ogresGroup.add(r2)
             
 

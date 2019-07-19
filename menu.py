@@ -333,12 +333,12 @@ if __name__ == "__main__":
     cuadros2 = pygame.sprite.Group()  
 
     #Protoceratops Dino
-    dinoBox3 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/cuadro1.png')
+    dinoBox3 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/cuadro3.png')
     c3= CuadroStatic([1100, 50], dinoBox3, "dinoRaptorBox2")     
     cuadros2.add(c3)
 
     # Tiranosaurio dino
-    dinoBox4 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/cuadro2.png')
+    dinoBox4 = pygame.image.load('/home/melii/Documents/Python/Dinobash/img/cuadro4.png')
     c4= CuadroStatic([1100, 50], dinoBox4, "TiranosaurioBox2")     
     cuadros2.add(c4)
     # cuadros de este tipo de dnosaurio solo aparecen en el nivel 2
